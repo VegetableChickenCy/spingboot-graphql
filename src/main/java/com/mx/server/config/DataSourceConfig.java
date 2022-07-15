@@ -1,3 +1,4 @@
+/*
 package com.mx.server.config;
 
 import javax.sql.DataSource;
@@ -9,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
-import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 @Configuration
 // 声明为配置类,相当于<beans>标签
@@ -28,4 +28,4 @@ public class DataSourceConfig {
                 .build(); // 构建数据源对象
     }
 
-}
+}*/

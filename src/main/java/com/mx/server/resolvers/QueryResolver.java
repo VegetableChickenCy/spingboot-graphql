@@ -1,6 +1,6 @@
 package com.mx.server.resolvers;
 
-import com.mx.server.entity.User;
+import com.mx.server.entity.UserGraphql;
 import com.mx.server.service.UserService;
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import org.apache.logging.log4j.LogManager;
@@ -18,13 +18,13 @@ public class QueryResolver implements GraphQLQueryResolver {
     @Resource
     private UserService userService;
 
-    public User user(String nickname) {
+    public UserGraphql user(String nickname) {
         logger.info("Query Resolver ==> user");
         logger.info("params: nickname:{}", nickname);
         return userService.getUserByNickname(nickname);
     }
 
-    public List<User> users() {
+    public List<UserGraphql> users() {
         logger.info("Query Resolver ==> users");
         return userService.listUsers();
     }

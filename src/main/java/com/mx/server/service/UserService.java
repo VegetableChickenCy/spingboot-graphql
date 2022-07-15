@@ -1,52 +1,54 @@
 package com.mx.server.service;
 
-import com.mx.server.dao.UserMapper;
-import com.mx.server.entity.User;
+import com.mx.server.dao.UserGraphqlDao;
+import com.mx.server.entity.UserGraphql;
 import com.mx.server.entity.input.AddUserInput;
 import com.mx.server.entity.response.ResponseBuilder;
 import com.mx.server.entity.response.Result;
 import com.mx.server.util.CommonUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
+
 import java.util.List;
 
 @Service
 public class UserService {
 
-    @Resource
-    private UserMapper userMapper;
+    @Autowired
+    private UserGraphqlDao userGraphqlDao;
 
     private static final Logger logger = LogManager.getLogger(UserService.class.getName());
 
-    public User getUserByNickname(String nickname){
+    public UserGraphql getUserByNickname(String nickname){
         logger.info("Service ==> getUserByNickname");
-        return userMapper.getUserByNickname(nickname);
+        return userGraphqlDao.findByNickName(nickname);
     }
 
-    public List<User> listUsers(){
+    public List<UserGraphql> listUsers(){
         logger.info("Service ==> listUsers");
-        return userMapper.listUsers();
+        return userGraphqlDao.findAll();
     }
 
     public Result addUser(String mail, String nickname, String password, String description){
         logger.info("Service ==> getUser");
 
-        User userDb = userMapper.getUserByNickname(nickname);
-        if (null != userDb){
+        UserGraphql userGraphqlDb = userGraphqlDao.findByNickName(nickname);
+        if (null != userGraphqlDb){
             return ResponseBuilder.getRespCodeMsg(-110, "用户昵称存在");
         }
 
-        User addUser = new User();
-        addUser.setId(CommonUtils.getUUID());
-        addUser.setMail(mail);
-        addUser.setNickname(nickname);
-        addUser.setPassword(password);
-        addUser.setDescription(description);
+        UserGraphql addUserGraphql = new UserGraphql();
+        addUserGraphql.setId(CommonUtils.getUUID());
+        addUserGraphql.setMail(mail);
+        addUserGraphql.setNickName(nickname);
+        addUserGraphql.setPassword(password);
+        addUserGraphql.setDescription(description);
 
-        userMapper.addUser(addUser);
+        userGraphqlDao.save(addUserGraphql);
 
         return ResponseBuilder.getRespCodeMsg(100, "Success");
     }
@@ -54,39 +56,40 @@ public class UserService {
     public Result deleteUser(String id){
         logger.info("Service ==> deleteUser");
 
-        User user = userMapper.getUserById(id);
-        if (null == user){
+        UserGraphql userGraphql = userGraphqlDao.getOne(id);
+        if (null == userGraphql){
             return ResponseBuilder.getRespCodeMsg(-500, "数据不存在");
         }
 
-        userMapper.deleteUser(id);
+        userGraphqlDao.deleteById(id);
         return ResponseBuilder.getRespCodeMsg(100, "Success");
     }
 
-    public User updateUser(String id,String mail, String nickname, String description){
+    public UserGraphql updateUser(String id, String mail, String nickname, String description){
         logger.info("Service ==> updateUser");
-        User updateUser = new User();
-        updateUser.setId(id);
-        updateUser.setMail(mail);
-        updateUser.setNickname(nickname);
-        updateUser.setDescription(description);
+        UserGraphql one = userGraphqlDao.getOne(id);
+        if (StringUtils.isEmpty(id) || null == one) {
+            throw new RuntimeException("id不正确");
+        }
+        UserGraphql updateUserGraphql = new UserGraphql();
+        updateUserGraphql.setId(id);
+        updateUserGraphql.setMail(mail);
+        updateUserGraphql.setNickName(nickname);
+        updateUserGraphql.setDescription(description);
 
-        userMapper.updateUser(updateUser);
-
-        return updateUser;
+        userGraphqlDao.save(updateUserGraphql);
+        return updateUserGraphql;
     }
 
-    public User addUserInput(AddUserInput addUserInput){
+    public UserGraphql addUserInput(AddUserInput addUserInput){
         logger.info("Service ==> addUserInput");
-        User addUser = new User();
-        addUser.setId(CommonUtils.getUUID());
-        addUser.setMail(addUserInput.getMail());
-        addUser.setNickname(addUserInput.getNickname());
-        addUser.setPassword(addUserInput.getPassword());
-        addUser.setDescription(addUserInput.getDescription());
-
-        userMapper.addUser(addUser);
-
-        return addUser;
+        UserGraphql addUserGraphql = new UserGraphql();
+        addUserGraphql.setId(CommonUtils.getUUID());
+        addUserGraphql.setMail(addUserInput.getMail());
+        addUserGraphql.setNickName(addUserInput.getNickName());
+        addUserGraphql.setPassword(addUserInput.getPassword());
+        addUserGraphql.setDescription(addUserInput.getDescription());
+        userGraphqlDao.save(addUserGraphql);
+        return addUserGraphql;
     }
 }

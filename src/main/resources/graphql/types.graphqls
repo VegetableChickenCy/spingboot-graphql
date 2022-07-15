@@ -1,26 +1,26 @@
 type Query {
     # 根据昵称获取用户
-    user(nickname: String!): User
+    user(nickName: String!): UserGraphql
     # 获取用户列表
-    users: [User]
+    users: [UserGraphql]
 }
 type Mutation {
     # 创建用户
-    addUser(mail: String!, nickname: String!, password: String!, description: String): Result
+    addUser(mail: String!, nickName: String!, password: String!, description: String): Result
     # 删除用户
     deleteUser(id: String!): Result
     # 更新用户
-    updateUser(id: String!, mail: String!, nickname: String!, description: String): User
+    updateUser(id: String!, mail: String!, nickName: String!, description: String): UserGraphql
     # 创建用户（入参类型为对象）
-    addUserByInput(input: AddUserInput): User
+    addUserByInput(input: AddUserInput): UserGraphql
 }
-type User {
+type UserGraphql {
     # id
     id: String!
     # 邮箱
     mail: String!
     # 昵称
-    nickname: String!
+    nickName: String!
     # 密码
     password: String!
     # 描述
@@ -34,7 +34,7 @@ type Result {
 
 input AddUserInput {
     mail: String!
-    nickname: String!
+    nickName: String!
     password: String!
     description: String
 }

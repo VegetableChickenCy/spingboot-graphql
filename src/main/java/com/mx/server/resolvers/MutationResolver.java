@@ -1,6 +1,6 @@
 package com.mx.server.resolvers;
 
-import com.mx.server.entity.User;
+import com.mx.server.entity.UserGraphql;
 import com.mx.server.entity.input.AddUserInput;
 import com.mx.server.entity.response.ResponseBuilder;
 import com.mx.server.entity.response.Result;
@@ -38,14 +38,14 @@ public class MutationResolver implements GraphQLQueryResolver, GraphQLMutationRe
         return userService.deleteUser(id);
     }
     
-    public User updateUser(String id, String mail, String nickname, String description) {
+    public UserGraphql updateUser(String id, String mail, String nickname, String description) {
         logger.info("Mutation Resolver ==> updateUser");
         logger.info("params: id:{}, mail:{}, nickname:{}, description:{}",
                 id, mail, nickname, description);
         return userService.updateUser(id, mail, nickname, description);
     }
 
-    public User addUserByInput(AddUserInput addUserInput){
+    public UserGraphql addUserByInput(AddUserInput addUserInput){
         logger.info("Mutation Resolver ==> addUserByInput");
         logger.info("params: {}", addUserInput);
         return userService.addUserInput(addUserInput);
