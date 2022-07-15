@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -89,6 +89,11 @@ public class UserService {
         addUserGraphql.setNickName(addUserInput.getNickName());
         addUserGraphql.setPassword(addUserInput.getPassword());
         addUserGraphql.setDescription(addUserInput.getDescription());
+        if (null != addUserInput.getSaveTime()) {
+            addUserGraphql.setSaveTime(addUserInput.getSaveTime());
+        }else {
+            addUserGraphql.setSaveTime(new Timestamp(System.currentTimeMillis()));
+        }
         userGraphqlDao.save(addUserGraphql);
         return addUserGraphql;
     }

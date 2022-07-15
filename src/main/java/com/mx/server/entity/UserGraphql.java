@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.sql.Date;
+import java.sql.Timestamp;
 
 @Data
 @Entity
@@ -27,4 +29,6 @@ public class UserGraphql implements Serializable {
     private String updateTime;
     @Column(name = "create_time")
     private String createTime;
+    @Column(name = "save_time")
+    private Timestamp saveTime;
 }

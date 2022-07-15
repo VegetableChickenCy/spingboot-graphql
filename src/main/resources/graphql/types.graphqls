@@ -1,3 +1,7 @@
+#scalar用于自定一个类型
+#格式 yyyy-MM-dd HH:mm:ss
+scalar Date
+
 type Query {
     # 根据昵称获取用户
     user(nickName: String!): UserGraphql
@@ -25,6 +29,8 @@ type UserGraphql {
     password: String!
     # 描述
     description: String
+    # 保存时间
+    saveTime: Date
 }
 
 type Result {
@@ -37,4 +43,5 @@ input AddUserInput {
     nickName: String!
     password: String!
     description: String
+    saveTime: Date
 }
